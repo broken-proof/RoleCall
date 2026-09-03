@@ -1,18 +1,11 @@
 import useFetch from '../hooks/useFetch.tsx';
-
-const URI = 'http://localhost:8080/api/test';
-
-interface Test{
-    id: string,
-    name: string,
-    anotherParam: string,
-}
+import type { Test } from "../types/Test.ts";
 
 function UserButton(){
     const { data, loading, error, fetchData } = useFetch<Test[]>();
 
     const handleClick = () => {
-        fetchData(URI, {
+        fetchData("/api/test", {
             method: "GET"
         });
     }

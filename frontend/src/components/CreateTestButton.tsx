@@ -1,23 +1,14 @@
-import {useCreate} from "../hooks/useCreate.tsx";
-
-const URI = 'http://localhost:8080/api/test';
-
-interface Test {
-    id: string;
-    name: string;
-    anotherParam: string;
-}
-
-interface NewTest {
-    name: string;
-    anotherParam: string;
-}
+import useFetch from "../hooks/useFetch.tsx";
+import type { NewTest, Test } from "../types/Test.ts";
 
 function CreateTestButton(){
-    const { create, loading } = useCreate<NewTest, Test>(URI);
+    const { loading, fetchData } = useFetch<Test>();
 
     const handleClick = async () => {
-        const res = await create({ name: 'Shivam', anotherParam: 'something' });
+        const res = await fetchData("/api/test", {
+            method: "POST",
+            data: { name: 'Shivam', anotherParam: 'something' } as NewTest,
+        });
         console.log(res);
     };
 
