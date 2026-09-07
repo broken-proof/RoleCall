@@ -1,6 +1,7 @@
 package com.newbyproof.rolecall.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Data
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import type { AxiosRequestConfig } from "axios";
 import apiClient from "../api/apiClient";
+import axios from "axios";
 
 interface UseFetchResult<T> {
     data: T | null;
@@ -29,7 +30,7 @@ function useFetch<T = unknown>() : UseFetchResult<T>{
             return response.data;
 
         } catch (err){
-            const msg = err instanceof Error ? err.message : "Something unexpected occured";
+            const msg = axios.isAxiosError(err) ? (err.response?.data?.message ?? err.message) : "An error occurred";
             setError(msg);
             throw err;
         } finally {

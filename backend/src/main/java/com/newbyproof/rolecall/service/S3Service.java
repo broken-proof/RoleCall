@@ -16,6 +16,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -25,14 +26,16 @@ public class S3Service {
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
-    private final S3Presigner s3Presigner;
+    @Autowired
+    private S3Presigner s3Presigner;
 
+    // IMPORTANT: WHEN DB ROW EXISTS, GET KEY FROM DB ROW
     public ResponseEntity<?> generateGetPresignedUrl(String filePath){
         try {
-            String key = LocalDateTime.now() + "_" + filePath;
+            String key = UUID.randomUUID() + "_" + filePath;
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                     .bucket(bucketName)
-                    .key(filePath)
+                    .key(key)
                     .build();
 
             GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
@@ -50,10 +53,10 @@ public class S3Service {
 
     public ResponseEntity<?> generatePutPresignedUrl(String filePath){
         try {
-            String key = LocalDateTime.now() + "_" + filePath;
+            String key = UUID.randomUUID() + "_" + filePath;
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
-                    .key(filePath)
+                    .key(key)
                     .build();
 
             PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
@@ -62,7 +65,8 @@ public class S3Service {
                     .build();
 
             PresignedPutObjectRequest presignedRequest = s3Presigner.presignPutObject(presignRequest);
-            return ResponseEntity.ok(presignedRequest.url().toString());
+            return ResponseEntity.ok(Map.of("url", presignedRequest.url().toString(),
+                    "key", key));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
