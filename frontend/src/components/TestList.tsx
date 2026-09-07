@@ -1,15 +1,14 @@
-import { useEffect } from "react";
-import { useTests } from "../hooks/useTest.ts";
+import type { Test } from "../types/Test";
 
-function TestList(){
-    const { tests, loading, error, getTests } = useTests();
+interface TestListProps {
+    tests: Test[] | null;
+    loading: boolean;
+    error: string | null;
+}
 
-    useEffect(() => {
-        getTests();
-    }, [getTests]);
-
-    if (loading) return <p>Loading Users...</p>;
-    if (error) return <p role="alert">Error</p>;
+function TestList({ tests, loading, error }: TestListProps){
+    if (loading && tests === null) return <p>Loading Users...</p>;
+    if (error) return <p role="alert">{error}</p>;
 
     return (
         <ul>

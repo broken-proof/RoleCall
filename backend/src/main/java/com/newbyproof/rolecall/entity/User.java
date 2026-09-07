@@ -15,11 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-<<<<<<< Updated upstream
 @AllArgsConstructor
-=======
 @Data
->>>>>>> Stashed changes
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

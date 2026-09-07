@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useCreateTests } from "../hooks/useTest";
 
-function CreateTestForm(){
+interface CreateTestFormProps {
+    onCreated?: () => void;
+}
+
+function CreateTestForm({ onCreated }: CreateTestFormProps){
     const [name, setName ] = useState("");
     const [anotherParam, setAnotherParam] = useState("");
     const { createTest, loading, error } = useCreateTests();
@@ -12,6 +16,7 @@ function CreateTestForm(){
             await createTest({ name, anotherParam });
             setName("");
             setAnotherParam("");
+            onCreated?.();
         } catch {
             //
         }
