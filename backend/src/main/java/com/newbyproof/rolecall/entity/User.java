@@ -13,14 +13,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Data
 @Table(name = "users")
 @NoArgsConstructor
+<<<<<<< Updated upstream
 @AllArgsConstructor
+=======
+@Data
+>>>>>>> Stashed changes
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -31,10 +34,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    private boolean enabled;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
+    private boolean enabled = true;
+    private boolean accountNonExpired = true;
+    private boolean accountNonLocked = true;
+    private boolean credentialsNonExpired = true;
 
     @Column(name = "verification_code")
     private String verificationCode;
@@ -53,24 +56,24 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    //Default methods
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return accountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return accountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return credentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
+
 }
