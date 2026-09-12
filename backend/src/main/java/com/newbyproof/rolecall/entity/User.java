@@ -42,6 +42,11 @@ public class User implements UserDetails {
     @Column(name = "verification_expiration")
     private LocalDateTime verificationExpiration;
 
+    // Everything the user owns
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;

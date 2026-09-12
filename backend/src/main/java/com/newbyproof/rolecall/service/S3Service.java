@@ -72,4 +72,38 @@ public class S3Service {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    // Generates a presigned PUT url for a caller-supplied key
+    public String generatePutPresignedUrlForKey(String key, String contentType){
+        PutObjectRequest.Builder putObjectRequestBuilder = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key);
+        if (contentType != null && !contentType.isBlank()) {
+            putObjectRequestBuilder.contentType(contentType);
+        }
+
+        PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofMinutes(15))
+                .putObjectRequest(putObjectRequestBuilder.build())
+                .build();
+
+        PresignedPutObjectRequest presignedRequest = s3Presigner.presignPutObject(presignRequest);
+        return presignedRequest.url().toString();
+    }
+
+    // Generates a presigned GET url for a caller-supplied key (e.g. Video.storageKey).
+    public String generateGetPresignedUrlForKey(String key){
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+
+        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofMinutes(60))
+                .getObjectRequest(getObjectRequest)
+                .build();
+
+        PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
+        return presignedRequest.url().toString();
+    }
 }
