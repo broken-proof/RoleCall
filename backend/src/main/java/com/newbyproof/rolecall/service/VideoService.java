@@ -1,6 +1,7 @@
 package com.newbyproof.rolecall.service;
 
 import com.newbyproof.rolecall.entity.Role;
+import com.newbyproof.rolecall.entity.Status;
 import com.newbyproof.rolecall.entity.User;
 import com.newbyproof.rolecall.entity.Video;
 import com.newbyproof.rolecall.repository.VideoRepository;
@@ -13,9 +14,6 @@ import java.util.UUID;
 
 @Service
 public class VideoService {
-
-    private static final String STATUS_PENDING = "PENDING";
-    private static final String STATUS_UPLOADED = "UPLOADED";
 
     @Autowired
     private VideoRepository videoRepository;
@@ -41,7 +39,7 @@ public class VideoService {
         video.setTitle(title);
         video.setStorageKey(key);
         video.setContentType(contentType);
-        video.setStatus(STATUS_PENDING);
+        video.setStatus(Status.PENDING);
         video = videoRepository.save(video);
 
         String uploadUrl = s3Service.generatePutPresignedUrlForKey(key, contentType);
@@ -55,7 +53,7 @@ public class VideoService {
         if (!video.getTrainee().getId().equals(trainee.getId())) {
             throw new SecurityException("Not authorized to modify this video");
         }
-        video.setStatus(STATUS_UPLOADED);
+        video.setStatus(Status.UPLOADED);
         video.setCreatedAt(Instant.now());
         return videoRepository.save(video);
     }

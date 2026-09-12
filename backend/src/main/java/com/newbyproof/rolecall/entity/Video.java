@@ -1,9 +1,6 @@
 package com.newbyproof.rolecall.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +23,9 @@ public class Video {
     private String title;
     private String storageKey; // For s3
     private String contentType;
-    private String status; // PENDING, UPLOADED, REVIEWED
+
+    @Enumerated(EnumType.STRING)
+    private Status status; // PENDING, UPLOADED, REVIEWED
+
     private Instant createdAt;
 }

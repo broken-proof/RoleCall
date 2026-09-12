@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/videos")
+@RequestMapping("/api/video")
 @CrossOrigin(origins = "*")
 public class VideoController {
 
@@ -34,7 +34,7 @@ public class VideoController {
                 "uploadUrl", uploadRequest.uploadUrl()));
     }
 
-    @PostMapping("/{id}/complete")
+    @PostMapping("/{id}/complete-upload")
     public ResponseEntity<?> completeUpload(@AuthenticationPrincipal User trainee, @PathVariable UUID id){
         try {
             Video video = videoService.completeUpload(id, trainee);
