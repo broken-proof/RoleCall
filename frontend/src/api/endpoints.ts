@@ -5,9 +5,6 @@ export const ENDPOINTS = {
         forgotPassword: "/auth/forgot-password",
         resetPassword: "/auth/reset-password",
     },
-    tests: {
-        base: "/test",
-    },
     videos: {
         uploadUrl: "/video/upload-url",
         completeUpload: (videoId: string) => `/video/${videoId}/complete-upload`,
