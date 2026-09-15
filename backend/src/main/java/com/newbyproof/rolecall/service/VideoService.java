@@ -1,9 +1,9 @@
 package com.newbyproof.rolecall.service;
 
 import com.newbyproof.rolecall.entity.Role;
-import com.newbyproof.rolecall.entity.Status;
 import com.newbyproof.rolecall.entity.User;
 import com.newbyproof.rolecall.entity.Video;
+import com.newbyproof.rolecall.entity.VideoStatus;
 import com.newbyproof.rolecall.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class VideoService {
         video.setTitle(title);
         video.setStorageKey(key);
         video.setContentType(contentType);
-        video.setStatus(Status.PENDING);
+        video.setStatus(VideoStatus.PENDING);
         video = videoRepository.save(video);
 
         String uploadUrl = s3Service.generatePutPresignedUrlForKey(key, contentType);
@@ -53,7 +53,7 @@ public class VideoService {
         if (!video.getTrainee().getId().equals(trainee.getId())) {
             throw new SecurityException("Not authorized to modify this video");
         }
-        video.setStatus(Status.UPLOADED);
+        video.setStatus(VideoStatus.UPLOADED);
         video.setCreatedAt(Instant.now());
         return videoRepository.save(video);
     }

@@ -25,7 +25,7 @@ public class Video {
     private String contentType;
 
     @Enumerated(EnumType.STRING)
-    private Status status; // PENDING, UPLOADED, REVIEWED
+    private VideoStatus status; // PENDING, UPLOADED, REVIEWED
 
     private Instant createdAt;
 }
