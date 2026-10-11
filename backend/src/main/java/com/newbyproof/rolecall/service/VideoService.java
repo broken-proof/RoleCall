@@ -1,9 +1,11 @@
 package com.newbyproof.rolecall.service;
 
 import com.newbyproof.rolecall.entity.Role;
+import com.newbyproof.rolecall.entity.Roleplay;
 import com.newbyproof.rolecall.entity.User;
 import com.newbyproof.rolecall.entity.Video;
 import com.newbyproof.rolecall.entity.VideoStatus;
+import com.newbyproof.rolecall.repository.RoleplayRepository;
 import com.newbyproof.rolecall.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class VideoService {
     private VideoRepository videoRepository;
 
     @Autowired
+    private RoleplayRepository roleplayRepository;
+
+    @Autowired
     private S3Service s3Service;
 
     public List<Video> getAllVideosFromTrainee(Integer id){
@@ -31,11 +36,18 @@ public class VideoService {
     }
 
     // Creates a pending Video row and returns a presigned url the client can PUT the file directly
-    public UploadRequest createUploadRequest(User trainee, String title, String filename, String contentType){
+    public UploadRequest createUploadRequest(User trainee, UUID roleplayId, String title, String filename, String contentType){
+        Roleplay roleplay = null;
+        if (roleplayId != null) {
+            roleplay = roleplayRepository.findById(roleplayId)
+                    .orElseThrow(() -> new IllegalArgumentException("Roleplay not found"));
+        }
+
         String key = "videos/" + trainee.getId() + "/" + UUID.randomUUID() + "_" + filename;
 
         Video video = new Video();
         video.setTrainee(trainee);
+        video.setRoleplay(roleplay);
         video.setTitle(title);
         video.setStorageKey(key);
         video.setContentType(contentType);

@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface VideoRepository extends JpaRepository<Video, UUID> {
     List<Video> findAllByTraineeId(Integer id);
+    List<Video> findAllByRoleplayId(UUID roleplayId);
 }

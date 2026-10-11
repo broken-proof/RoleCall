@@ -1,1 +1,49 @@
+# =========================================================================
+# Root / Node / Frontend Configurations
+# =========================================================================
+node_modules/
+/package-lock.json
 .env
+
+# =========================================================================
+# Java / Maven (Refactored for /backend subfolder)
+# =========================================================================
+backend/HELP.md
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/buildlog.txt
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# =========================================================================
+# NetBeans (Refactored for /backend subfolder)
+# =========================================================================
+backend/nbproject/private/
+backend/nbbuild/
+backend/dist/
+backend/nbdist/
+backend/.nb-gradle/
+backend/build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# =========================================================================
+# IDEs and Editors (Global Rules - covers both root and subfolders)
+# =========================================================================
+### VS Code ###
+.vscode/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### STS (Spring Tool Suite) ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache

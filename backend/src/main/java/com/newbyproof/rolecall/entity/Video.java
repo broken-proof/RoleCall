@@ -20,8 +20,15 @@ public class Video {
     @ManyToOne
     private User trainee;
 
+    // The roleplay this submission performs; a roleplay can have many submissions
+    @ManyToOne
+    @JoinColumn(name = "roleplay_id")
+    private Roleplay roleplay;
+
     private String title;
-    private String storageKey; // For s3
+
+    @Column(unique = true)
+    private String storageKey; // For s3, one file per submission
     private String contentType;
 
     @Enumerated(EnumType.STRING)

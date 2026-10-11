@@ -27,11 +27,15 @@ public class VideoController {
         if (request.filename() == null || request.filename().isBlank()) {
             return ResponseEntity.badRequest().body(Map.of("message", "filename is required"));
         }
-        VideoService.UploadRequest uploadRequest = videoService.createUploadRequest(
-                trainee, request.title(), request.filename(), request.contentType());
-        return ResponseEntity.ok(Map.of(
-                "videoId", uploadRequest.videoId(),
-                "uploadUrl", uploadRequest.uploadUrl()));
+        try {
+            VideoService.UploadRequest uploadRequest = videoService.createUploadRequest(
+                    trainee, request.roleplayId(), request.title(), request.filename(), request.contentType());
+            return ResponseEntity.ok(Map.of(
+                    "videoId", uploadRequest.videoId(),
+                    "uploadUrl", uploadRequest.uploadUrl()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
+        }
     }
 
     @PostMapping("/{id}/complete-upload")
@@ -64,5 +68,5 @@ public class VideoController {
         }
     }
 
-    public record UploadUrlRequest(String title, String filename, String contentType) {}
+    public record UploadUrlRequest(UUID roleplayId, String title, String filename, String contentType) {}
 }

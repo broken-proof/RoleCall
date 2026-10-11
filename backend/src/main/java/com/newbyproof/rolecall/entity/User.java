@@ -53,7 +53,7 @@ public class User implements UserDetails {
     // Everything the user owns
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.TRAINEE;
 
     public User(String username, String email, String password) {
         this.username = username;
@@ -63,7 +63,11 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        // Maps Role to ROLE_TRAINER / ROLE_TRAINEE / ROLE_ADMIN so hasRole(...) checks work
+        if (role == null) {
+            return List.of();
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override

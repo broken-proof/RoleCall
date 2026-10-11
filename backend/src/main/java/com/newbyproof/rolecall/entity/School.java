@@ -3,7 +3,9 @@ package com.newbyproof.rolecall.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +24,16 @@ public class School {
     @Column(nullable = false, unique = true)
     private String name;
 
+    // Excluded from toString/equals/hashCode: admin.school points back here
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private User admin;
 
-    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = false)
+    // No cascade: deleting a school must not delete its users
+    @OneToMany(mappedBy = "school")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<User> users = new ArrayList<>();
 }
